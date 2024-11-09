@@ -36,7 +36,7 @@ loader = WebBaseLoader(
 web_docs = loader.load()
 
 # documentos del pdf 
-pdf_loader = PyPDFLoader("C:/Users/Facundo/Documents/FACUNDO/PROMPTIOR/AI Engineer.pdf")
+pdf_loader = PyPDFLoader("AIEngineer.pdf")
 pdf_docs = pdf_loader.load()
 
 
