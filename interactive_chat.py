@@ -20,7 +20,6 @@ def interaction_user_with_model():
         # Ejecuta el modelo con el estado actual
         response = call_model(state)
         
-        # Imprime la respuesta
         print("Answer:", response["answer"])
         
         # Actualiza el historial de chat para el próximo ciclo
