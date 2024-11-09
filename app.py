@@ -1,8 +1,7 @@
 from flask import Flask, request, jsonify
 from langchain_core.messages import HumanMessage, AIMessage
 
-# Importar funciones del chatbot
-from chatbot_pipeline import call_model  # Reemplaza `your_module_name` con el nombre de tu archivo principal si está en otro archivo
+from chatbot_pipeline import call_model
 
 app = Flask(__name__)
 
@@ -20,9 +19,6 @@ def favicon():
 def chat():
     global chat_history
 
-    # Depuración: Imprime el JSON recibido
-    print("Datos recibidos:", request.json)
-    
     # Obtener el mensaje del usuario desde el cuerpo de la solicitud
     user_input = request.json.get("message", "")
 

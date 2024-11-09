@@ -1,7 +1,8 @@
+import requests
 import os
 from langchain_openai import ChatOpenAI
 from typing import Sequence
-import bs4
+from bs4 import BeautifulSoup
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_community.document_loaders import WebBaseLoader
@@ -29,10 +30,27 @@ llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 ### Construct retriever ###
 
+base_url = "https://www.promtior.ai/"
+
+# Hacer la solicitud a la página
+response = requests.get(base_url)
+soup = BeautifulSoup(response.text, "html.parser")
+
+# Extraer todos los enlaces
+links = []
+for a_tag in soup.find_all("a", href=True):
+    href = a_tag["href"]
+    # Convertir enlaces relativos a absolutos
+    if href.startswith("/"):
+        href = base_url.rstrip("/") + href
+    if base_url in href:  # Asegurarse de que pertenece al dominio
+        links.append(href)
+
+# Eliminar duplicados
+unique_links = list(set(links))
+
 # documentos de la página web
-loader = WebBaseLoader(
-    web_paths=("https://www.promtior.ai/",),
-)
+loader = WebBaseLoader(web_paths=unique_links)
 web_docs = loader.load()
 
 # documentos del pdf 
