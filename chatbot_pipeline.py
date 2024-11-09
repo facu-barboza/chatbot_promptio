@@ -29,18 +29,13 @@ llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 ### Construct retriever ###
 
-# Cargar documentos de la página web
+# documentos de la página web
 loader = WebBaseLoader(
-    web_paths=("https://www.promtior.ai/service",),
-    bs_kwargs=dict(
-        parse_only=bs4.SoupStrainer(
-            class_=("dBAkHi apnqc")
-        )
-    ),
+    web_paths=("https://www.promtior.ai/",),
 )
 web_docs = loader.load()
 
-# Reemplaza "ruta_a_tu_archivo.pdf" con la ruta real de tu archivo PDF
+# documentos del pdf 
 pdf_loader = PyPDFLoader("C:/Users/Facundo/Documents/FACUNDO/PROMPTIOR/AI Engineer.pdf")
 pdf_docs = pdf_loader.load()
 
@@ -119,31 +114,16 @@ def call_model(state: State):
         "answer": response["answer"],
     }
 
-
-def interaction_user_with_model():
-    chat_history = []
-    while True:
-        user_input = input("Write your question (or write 'exit' to finish): ")
-        if user_input.lower() == "exit":
-            break
-
-        # Actualizar el estado con el input del usuario y el historial de chat
-        state = {
-            "input": user_input,
-            "chat_history": chat_history,
-            "context": "",
-            "answer": ""
-        }
-        
-        # Ejecuta el modelo con el estado actual
-        response = call_model(state)
-        
-        # Imprime la respuesta
-        print("Respuesta:", response["answer"])
-        
-        # Actualiza el historial de chat para el próximo ciclo
-        chat_history.extend([HumanMessage(user_input), AIMessage(response["answer"])])
-
+def call_model(state):
+    response = rag_chain.invoke(state)
+    return {
+        "chat_history": [
+            HumanMessage(state["input"]),
+            AIMessage(response["answer"]),
+        ],
+        "context": response["context"],
+        "answer": response["answer"],
+    }
 
 workflow = StateGraph(state_schema=State)
 workflow.add_edge(START, "model")
@@ -152,4 +132,5 @@ workflow.add_node("model", call_model)
 memory = MemorySaver()
 app = workflow.compile(checkpointer=memory)
 
-interaction_user_with_model()
+
+
