@@ -12,9 +12,6 @@ def home():
 
 chat_history = []
 
-@app.route("/", methods=["GET"])
-def home():
-    return "Welcome to Chatbot Promtior! Use the endpoint '/chat' to interact."
 
 @app.route("/favicon.ico")
 def favicon():
