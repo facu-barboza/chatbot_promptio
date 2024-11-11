@@ -18,7 +18,7 @@ sendBtn.addEventListener('click', async () => {
     const data = await response.json();
 
     // Display chatbot's response
-    appendMessage('Chatbot', data.response);
+    appendMessage('Chatbot', data.answer);
     userInput.value = '';
 });
 
