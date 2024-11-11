@@ -120,11 +120,7 @@ class State(TypedDict):
 
 
 def call_model(state: State):
-    response = {
-        "answer": f"Simulated answer for: {state['input']}",
-        "context": "Simulated context",
-    }
-    print(f"Simulated response: {response}")  # Depuración
+    response = rag_chain.invoke(state)
     return {
         "chat_history": [
             HumanMessage(state["input"]),
@@ -133,7 +129,6 @@ def call_model(state: State):
         "context": response["context"],
         "answer": response["answer"],
     }
-
 
 workflow = StateGraph(state_schema=State)
 workflow.add_edge(START, "model")
