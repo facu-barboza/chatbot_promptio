@@ -120,14 +120,17 @@ class State(TypedDict):
 
 
 def call_model(state: State):
+    print(f"State before invocation: {state}")  # Verificar entrada
     response = rag_chain.invoke(state)
+    print(f"Response from rag_chain: {response}")  # Verificar salida
+
     return {
         "chat_history": [
             HumanMessage(state["input"]),
-            AIMessage(response["answer"]),
+            AIMessage(response.get("answer", "No answer provided")),
         ],
-        "context": response["context"],
-        "answer": response["answer"],
+        "context": response.get("context", "No context available"),
+        "answer": response.get("answer", "No answer provided"),
     }
 
 workflow = StateGraph(state_schema=State)
