@@ -132,6 +132,7 @@ def call_model(state: State):
 
 def call_model(state):
     response = rag_chain.invoke(state)
+    print(f"Raw response from rag_chain: {response}")  # Depuración
     return {
         "chat_history": [
             HumanMessage(state["input"]),
