@@ -7,7 +7,8 @@ COPY requirements.txt requirements.txt
 COPY app.py app.py
 COPY chatbot_pipeline.py chatbot_pipeline.py
 COPY AIEngineer.pdf AIEngineer.pdf 
-COPY front front
+COPY static static
+COPY template template
 
 # Dependencies
 RUN pip install --no-cache-dir -r requirements.txt
