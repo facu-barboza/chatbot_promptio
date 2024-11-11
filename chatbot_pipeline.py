@@ -130,18 +130,6 @@ def call_model(state: State):
         "answer": response["answer"],
     }
 
-def call_model(state):
-    response = rag_chain.invoke(state)
-    print(f"Raw response from rag_chain: {response}")  # Depuración
-    return {
-        "chat_history": [
-            HumanMessage(state["input"]),
-            AIMessage(response["answer"]),
-        ],
-        "context": response["context"],
-        "answer": response["answer"],
-    }
-
 workflow = StateGraph(state_schema=State)
 workflow.add_edge(START, "model")
 workflow.add_node("model", call_model)
