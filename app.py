@@ -1,9 +1,14 @@
 from flask import Flask, request, jsonify
+from flask import render_template
 from langchain_core.messages import HumanMessage, AIMessage
 
 from chatbot_pipeline import call_model
 
 app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 chat_history = []
 
